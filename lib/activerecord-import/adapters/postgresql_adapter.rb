@@ -28,7 +28,10 @@ module ActiveRecord::Import::PostgreSQLAdapter
       else
         select_values( sql2insert, *args )
       end
-      clear_query_cache if query_cache_enabled
+      if query_cache_enabled
+        Rails.logger.info "[ActiveRecord-Import] Clearing cache — caller #{caller(7..8)}"
+        clear_query_cache
+      end
     end
 
     if options[:returning].blank?
